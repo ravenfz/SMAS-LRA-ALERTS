@@ -51,15 +51,18 @@ def send_report(elem):
             'localidade'], elem['rua'], elem['ocorrencia'])
 
     logging.info(report)
-    api = create_api()
-    api.update_status(report)
-    logging.debug("Tweet Sent")
+    try:
+        api = create_api()
+        api.update_status(report)
+        logging.debug("Tweet Sent")
+    except tweepy.TweepError as e:
+        logging.error("Error Submitting Tweet %s", % e)
 
 
 def search_element_in_array(elem_actual, array):
     for elem in array:
         # if found same location on processed returns it
-        if elem['freguesia'] == elem_actual['freguesia'] and elem['localidade'] == elem_actual['localidade'] and elem['rua'] == elem_actual['rua']:
+        if elem['codigo'] == elem_actual['codigo']:
             return elem
     return
 
