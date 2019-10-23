@@ -56,7 +56,7 @@ def send_report(elem):
         api.update_status(report)
         logging.debug("Tweet Sent")
     except tweepy.TweepError as e:
-        logging.error("Error Submitting Tweet %s", % e)
+        logging.error("Error Submitting Tweet %s" % e)
 
 
 def search_element_in_array(elem_actual, array):
