@@ -50,6 +50,12 @@ def send_report(elem):
             report = "[%s] Na freguesia de %s, localidade %s, na %s. Detalhe: %s. #SMAS_LRA_AVARIA" % (elem['estado'], elem['freguesia'], elem[
             'localidade'], elem['rua'], elem['ocorrencia'])
 
+    # Adding mapp if location is detailed
+    if elem['freguesia'] and elem['localidade'] and elem['rua']:
+        google_location = " Mapa: https://google.com/maps/search/Leiria,%s,%s,%s" % (elem['freguesia'], elem[
+                'localidade'], elem['rua'])
+        report = report + google_location
+
     logging.info(report)
     try:
         api = create_api()
