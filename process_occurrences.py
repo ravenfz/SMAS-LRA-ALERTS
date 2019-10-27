@@ -35,25 +35,31 @@ def send_report(elem):
 
     # if not resolved is "in curso"
     if not str(elem['estado']).lower() == "resolvido":
+        dia = elem['datafecho'].split(" ")[0]
+        hora = elem['datafecho'].split(" ")[1]
         if elem['fecho'] == 1:
-            report = "[%s] Na freguesia de %s, localidade %s, na %s com corte de abastecimento a partir das %s. Detalhe: %s. #SMAS_LRA_AVARIA" % (elem['estado'], elem['freguesia'], elem[
-            'localidade'], elem['rua'], elem['datafecho'], elem['ocorrencia'])
+            report = "[%s] Na freguesia de %s, localidade %s, na %s com corte de abastecimento a partir do dia %s às %s. Detalhe: %s. #SMAS_LRA_AVARIA" % (elem['estado'], elem['freguesia'], elem[
+            'localidade'], elem['rua'], dia, hora, elem['ocorrencia'])
         else:
             report = "[%s] Na freguesia de %s, localidade %s, na %s sem corte de abastecimento. Detalhe: %s. #SMAS_LRA_AVARIA" % (elem['estado'], elem['freguesia'], elem[
             'localidade'], elem['rua'], elem['ocorrencia'])
     #if resolved
     else:
+        dia = elem['dataabertura'].split(" ")[0]
+        hora = elem['dataabertura'].split(" ")[1]
         if elem['fecho'] == 1:
-            report = "[%s] Na freguesia de %s, localidade %s, na %s com restabelecimento de água às %s. Detalhe: %s. #SMAS_LRA_AVARIA" % (elem['estado'], elem['freguesia'], elem[
-            'localidade'], elem['rua'], elem['dataabertura'], elem['ocorrencia'])
+            report = "[%s] Na freguesia de %s, localidade %s, na %s com restabelecimento de água no dia %s às %s. Detalhe: %s. #SMAS_LRA_AVARIA" % (elem['estado'], elem['freguesia'], elem[
+            'localidade'], elem['rua'], dia, hora, elem['ocorrencia'])
         else:
             report = "[%s] Na freguesia de %s, localidade %s, na %s. Detalhe: %s. #SMAS_LRA_AVARIA" % (elem['estado'], elem['freguesia'], elem[
             'localidade'], elem['rua'], elem['ocorrencia'])
 
     # Adding mapp if location is detailed
     if elem['freguesia'] and elem['localidade'] and elem['rua']:
-        google_location = " Mapa: https://google.com/maps/search/Leiria,%s,%s,%s" % (elem['freguesia'], elem[
+        query = "%s,%s,%s" % (elem['freguesia'], elem[
                 'localidade'], elem['rua'])
+        query = query.replace(" ", "%20")
+        google_location = " Mapa: https://google.com/maps/search/Leiria,%s" % query
         report = report + google_location
 
     logging.info(report)
